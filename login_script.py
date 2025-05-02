@@ -57,6 +57,10 @@ if __name__ == "__main__":
         status = login_koyeb(email, password)
         login_statuses.append(status)
         print(status)
+        # 在每个账号登录之间增加随机延迟
+        delay = random.randint(10, 30)  # 随机延迟 10 到 30 秒
+        print(f"等待 {delay} 秒后继续...")
+        time.sleep(delay)
 
      if login_statuses:
         # 添加图标和样式
