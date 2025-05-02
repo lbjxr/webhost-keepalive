@@ -9,7 +9,7 @@ def send_telegram_message(message):
     payload = {
         "chat_id": chat_id,
         "text": message,
-        "parse_mode": "Markdown"
+        "parse_mode": "Markdown"  # 或者使用 "HTML"
     }
     response = requests.post(url, json=payload)
     return response.json()
@@ -58,11 +58,14 @@ if __name__ == "__main__":
         login_statuses.append(status)
         print(status)
 
-    if login_statuses:
-        message = "WEBHOST登录状态:\n\n" + "\n".join(login_statuses)
+     if login_statuses:
+        # 添加图标和样式
+        message = "🌐 *WEBHOST 登录状态:* \n\n" + "\n".join(
+            [f"✅ *{status}*" if "登录成功" in status else f"❌ `{status}`" for status in login_statuses]
+        )
         result = send_telegram_message(message)
-        print("消息已发送到Telegram:", result)
+        print("消息已发送到 Telegram:", result)
     else:
-        error_message = "没有配置任何账号"
+        error_message = "⚠️ *没有配置任何账号*"
         send_telegram_message(error_message)
         print(error_message)
