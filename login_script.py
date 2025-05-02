@@ -1,6 +1,8 @@
 from playwright.sync_api import sync_playwright
 import os
 import requests
+import random
+import time
 
 def send_telegram_message(message):
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
@@ -62,14 +64,16 @@ if __name__ == "__main__":
         print(f"等待 {delay} 秒后继续...")
         time.sleep(delay)
 
-     if login_statuses:
+    # 根据登录状态生成消息
+    if login_statuses:
         # 添加图标和样式
         message = "🌐 *WEBHOST 登录状态:* \n\n" + "\n".join(
             [f"✅ *{status}*" if "登录成功" in status else f"❌ `{status}`" for status in login_statuses]
         )
-        result = send_telegram_message(message)
-        print("消息已发送到 Telegram:", result)
     else:
-        error_message = "⚠️ *没有配置任何账号*"
-        send_telegram_message(error_message)
-        print(error_message)
+        # 如果没有任何账号配置，发送警告消息
+        message = "⚠️ *没有配置任何账号*"
+
+    # 发送消息到 Telegram
+    result = send_telegram_message(message)
+    print("消息已发送到 Telegram:", result)
